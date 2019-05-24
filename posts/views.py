@@ -1,16 +1,19 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.views.generic import ListView
+
 from posts.models import Post
 from posts.forms import PostForm
 
 
 
-@login_required
-def list_posts(request):
 
-    posts = Post.objects.all().order_by('-created')
-   
-    return render(request,'posts/feed.html', {'posts':posts})
+class PostsFeedView(ListView):
+
+    model = Post
+    context_object_name = 'Posts'
+    template_name = 'posts/feed.html'
+    ordering = ('-created')
 
 
 def new_post(request):
